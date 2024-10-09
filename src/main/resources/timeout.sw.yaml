@@ -1,0 +1,48 @@
+id: 'timeout'
+version: '0.3'
+specVersion: '0.8'
+name: 'timeout'
+description: 'timeout'
+functions:
+  - name: 'printMessage'
+    operation: 'sysout'
+    type: custom
+events:
+  - name: 'Inventory Result Event'
+    source: ''
+    type: inventoryResult
+    # kind: consumed  
+    # correlation:
+    #   - contextAttributeName: orderid
+start: Start
+states:
+  - name: 'Start'
+    type: operation
+    actions:
+      - name: 'print'
+        functionRef:
+          refName: printMessage
+          arguments:
+            message: 'Start'
+    transition: Check Inventory
+  - name: Check Inventory
+    type: callback
+    action:
+      name: printAction
+      functionRef:
+        refName: printMessage
+        arguments:
+          message: 'Inventory Callback'
+    eventRef: "Inventory Result Event"
+    timeouts:
+      stateExecTimeout: PT30S
+    transition: Inventory Result
+  - name: 'Inventory Result'
+    type: operation
+    actions:
+      - name: printAction
+        functionRef:
+          refName: printMessage
+          arguments:
+            message: 'Inventory Result Received'
+    end: true

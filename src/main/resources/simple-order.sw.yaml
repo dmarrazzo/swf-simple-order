@@ -1,0 +1,52 @@
+id: 'simple-order'
+version: '0.3'
+specVersion: '0.8'
+name: 'Simple Order'
+description: 'Simple Order'
+start: Order Received
+# dataInputSchema: 
+functions:
+  - name: 'printMessage'
+    operation: 'sysout'
+    type: custom
+events:
+  - name: 'New Order Event'
+    source: 'client'
+    type: 'newOrderEvent'
+    kind: consumed
+    correlation:
+      - contextAttributeName: orderid
+  - name: 'Inventory Result Event'
+    source: 'client'
+    type: inventoryResult
+    kind: consumed  
+    correlation:
+      - contextAttributeName: orderid
+states:
+  - name: 'Order Received'
+    type: event
+    onEvents:
+      - eventRefs:
+          - New Order Event
+    transition: Check Inventory
+  - name: Check Inventory
+    type: callback
+    action:
+      name: printAction
+      functionRef:
+        refName: printMessage
+        arguments:
+          message: 'Inventory Callback'
+    eventRef: "Inventory Result Event"
+    timeouts:
+      stateExecTimeout: PT30
+    transition: Inventory Result
+  - name: 'Inventory Result'
+    type: operation
+    actions:
+      - name: printAction
+        functionRef:
+          refName: printMessage
+          arguments:
+            message: 'Inventory Result Received'
+    end: true

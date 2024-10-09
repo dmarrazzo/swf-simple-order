@@ -1,0 +1,42 @@
+########################################################
+# Variables
+@orderId = 1000
+@host=http://localhost:8080
+#@host=https://simple-order-swf-dev.apps.ocp4.dmshift.eu
+#@host=https://dev-ing27k0907vm-0320-swf-dev.apps.ocp4.dmshift.eu
+
+
+########################################################
+# Start order workflow through CloudEvent
+# - use case: item available in the inventory
+
+POST {{host}}/
+Content-Type: application/json
+Accept: application/json
+ce-specversion: 1.0
+ce-id: {{$guid}}
+ce-source: Client
+ce-type: newOrderEvent
+ce-orderid: {{orderId}}
+
+{ 
+    "orderId": "{{orderId}}",
+    "item": "1110"
+}
+
+########################################################
+# Inventory Result through CloudEvent
+
+POST {{host}}/
+Content-Type: application/json
+Accept: application/json
+ce-specversion: 1.0
+ce-id: {{$guid}}
+ce-source: Inventory
+ce-type: inventoryResult
+ce-orderid: {{orderId}}
+
+{ 
+    "orderId": "{{orderId}}"
+}
+
