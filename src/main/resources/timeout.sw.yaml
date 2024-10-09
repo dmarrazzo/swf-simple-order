@@ -14,16 +14,16 @@ events:
     # kind: consumed  
     # correlation:
     #   - contextAttributeName: orderid
-start: Start
+start: New Order
 states:
-  - name: 'Start'
+  - name: 'New Order'
     type: operation
     actions:
       - name: 'print'
         functionRef:
           refName: printMessage
           arguments:
-            message: 'Start'
+            message: 'New Order'
     transition: Check Inventory
   - name: Check Inventory
     type: callback
@@ -35,7 +35,7 @@ states:
           message: 'Inventory Callback'
     eventRef: "Inventory Result Event"
     timeouts:
-      stateExecTimeout: PT30S
+      eventTimeout: PT30S
     transition: Inventory Result
   - name: 'Inventory Result'
     type: operation
