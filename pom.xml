@@ -82,10 +82,11 @@
             <groupId>org.kie</groupId>
             <artifactId>kogito-addons-quarkus-jobs-service-embedded</artifactId>
         </dependency>
-        <dependency>
+        <!-- the following dep is alternative to the previous one -->
+        <!-- <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kogito-addons-quarkus-jobs-knative-eventing</artifactId>
-        </dependency>
+        </dependency> -->
         <!-- missing -->
         <dependency>
             <groupId>org.kie</groupId>
