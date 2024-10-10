@@ -40,3 +40,15 @@ ce-orderid: {{orderId}}
     "orderId": "{{orderId}}"
 }
 
+###
+
+POST http://localhost:8080/timeout
+Content-Type: application/json
+Accept: application/json
+
+{ 
+    "workflowdata": { 
+        "orderId": "{{orderId}}",
+        "item": "1110"
+    } 
+}

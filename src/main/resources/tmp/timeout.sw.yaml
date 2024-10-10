@@ -11,9 +11,6 @@ events:
   - name: 'Inventory Result Event'
     source: ''
     type: inventoryResult
-    # kind: consumed  
-    # correlation:
-    #   - contextAttributeName: orderid
 start: New Order
 states:
   - name: 'New Order'

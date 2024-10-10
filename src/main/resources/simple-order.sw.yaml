@@ -39,14 +39,30 @@ states:
           message: 'Inventory Callback'
     eventRef: "Inventory Result Event"
     timeouts:
-      stateExecTimeout: PT30
-    transition: Inventory Result
-  - name: 'Inventory Result'
+      eventTimeout: PT1M
+    transition: Order Routing
+  - name: Order Routing
+    type: switch
+    dataConditions:
+      - condition: '.available'
+        transition: Ship items
+    defaultCondition:
+      transition: Forward to External Supplier
+  - name: Ship items
     type: operation
     actions:
       - name: printAction
         functionRef:
           refName: printMessage
           arguments:
-            message: 'Inventory Result Received'
+            message: 'Ship item'
+    end: true
+  - name: Forward to External Supplier
+    type: operation
+    actions:
+      - name: printAction
+        functionRef:
+          refName: printMessage
+          arguments:
+            message: 'Send to External Supplier'
     end: true
